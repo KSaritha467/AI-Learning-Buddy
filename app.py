@@ -3,7 +3,7 @@ import streamlit as st
 import google.generativeai as genai
 # Configure Gemini API using Streamlit Secrets
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
-model = genai.GenerativeModel("gemini-2.5-flash-lite")
+model = genai.GenerativeModel("gemini-2.0-flash")
 
 st.set_page_config(page_title="AI Learning Buddy Saritha", page_icon="🎓")
 
