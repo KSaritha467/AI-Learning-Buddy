@@ -1,12 +1,18 @@
 import streamlit as st
 from google import genai
-# Configure Gemini API using Streamlit Secrets
+
+# Configure Gemini
 client = genai.Client(api_key=st.secrets["GOOGLE_API_KEY"])
 
-st.set_page_config(page_title="AI Learning Buddy Saritha", page_icon="🎓")
+# Page configuration
+st.set_page_config(
+    page_title="AI Learning Buddy Saritha",
+    page_icon="🎓"
+)
 
 st.title("🎓 AI Learning Buddy Saritha")
 
+# User input
 topic = st.text_input("Enter a Topic")
 
 option = st.selectbox(
@@ -19,10 +25,12 @@ option = st.selectbox(
     ]
 )
 
+# Generate response
 if st.button("Generate"):
 
-    if topic == "":
+    if topic.strip() == "":
         st.warning("Please enter a topic.")
+
     else:
 
         if option == "Explain Concept":
@@ -32,14 +40,18 @@ if st.button("Generate"):
             prompt = f"Give one simple real-life example of {topic}."
 
         elif option == "Generate Quiz":
-            prompt = f"Create 5 MCQs on {topic} with answers."
+            prompt = f"Create 5 multiple choice questions on {topic} with answers."
 
         else:
             prompt = topic
 
-       response = client.models.generate_content(
-    model="gemini-2.5-flash",
-    contents=prompt,
-)
+        try:
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt,
+            )
 
-st.write(response.text)
+            st.write(response.text)
+
+        except Exception as e:
+            st.error(f"Error: {e}")
